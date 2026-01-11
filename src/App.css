@@ -1,0 +1,18 @@
+@keyframes vynko {
+  0%, 100% { opacity: 0.1; letter-spacing: 0.25em; }
+  50% { opacity: 1; letter-spacing: 0.4em; }
+}
+.animate-vynko {
+  animation: vynko 1.8s ease-in-out infinite;
+}
+
+
+
+/* @keyframes slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.animate-slide {
+  animation: slide 1s linear infinite;
+} */
+
