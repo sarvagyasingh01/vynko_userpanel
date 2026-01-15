@@ -1,102 +1,119 @@
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import HomePage from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
-import { useState,useEffect } from "react";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import CartSidebar from "./components/shared/CartSidebar";
 import LoginModal from "./components/shared/LoginModal";
-import "./App.css"
+import "./App.css";
+import ContactsPage from "./pages/ContactsPage";
+import PrivacyPolicy from "./pages/PrivacyPolicyPage";
+import ReturnsAndExchangePolicy from "./pages/ReturnsAndExchangePolicy";
 
-export default function App() {
-  const [currentRoute, setCurrentRoute] = useState('home'); // 'home', 'product/:id'
-  const [currentProductId, setCurrentProductId] = useState(null);
+function AppContent() {
+  const navigate = useNavigate();
+
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
-    // Prevent body scroll when cart or modal is open
-    if (isCartOpen || isLoginOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
+    document.body.style.overflow =
+      isCartOpen || isLoginOpen ? "hidden" : "auto";
   }, [isCartOpen, isLoginOpen]);
 
-  // Navigation functions
+  // Navigation
   const navigateToProduct = (productId) => {
-    setCurrentProductId(productId);
-    setCurrentRoute('product');
+    navigate(`/product/${productId}`);
     window.scrollTo(0, 0);
-  };
-
-  const navigateToHome = () => {
-    setCurrentProductId(null);
-    setCurrentRoute('home');
   };
 
   // Cart functions
   const handleAddToCart = (product, quantity, size) => {
-    setCartItems(prevItems => {
-      const newItem = { 
-        ...product, 
-        quantity, 
-        size, 
-        cartId: Date.now() // Unique ID for cart item
-      };
-      return [...prevItems, newItem];
-    });
-    setIsCartOpen(true); // Open cart after adding an item
+    setCartItems((prev) => [
+      ...prev,
+      {
+        ...product,
+        quantity,
+        size,
+        cartId: Date.now(),
+      },
+    ]);
+    setIsCartOpen(true);
   };
 
-  const handleUpdateCartQuantity = (cartId, newQuantity) => {
-    if (newQuantity < 1) {
-      handleRemoveFromCart(cartId);
+  const handleUpdateCartQuantity = (cartId, quantity) => {
+    if (quantity < 1) {
+      setCartItems((prev) => prev.filter((i) => i.cartId !== cartId));
       return;
     }
-    setCartItems(prevItems => 
-      prevItems.map(item => 
-        item.cartId === cartId ? { ...item, quantity: newQuantity } : item
+    setCartItems((prev) =>
+      prev.map((i) =>
+        i.cartId === cartId ? { ...i, quantity } : i
       )
     );
   };
 
   const handleRemoveFromCart = (cartId) => {
-    setCartItems(prevItems => prevItems.filter(item => item.cartId !== cartId));
-  };
-
-  // Route rendering
-  const renderCurrentPage = () => {
-    switch (currentRoute) {
-      case 'product':
-        return (
-          <ProductPage 
-            productId={currentProductId} 
-            onAddToCart={handleAddToCart} 
-            onBack={navigateToHome} 
-          />
-        );
-      case 'home':
-      default:
-        return <HomePage onProductClick={navigateToProduct} />;
-    }
+    setCartItems((prev) => prev.filter((i) => i.cartId !== cartId));
   };
 
   return (
     <div className="font-sans bg-white">
-      <Header onCartClick={() => setIsCartOpen(true)} onLoginClick={() => setIsLoginOpen(true)} />
+      <Header
+        onCartClick={() => setIsCartOpen(true)}
+        onLoginClick={() => setIsLoginOpen(true)}
+      />
+
       <main>
-        {renderCurrentPage()}
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage onProductClick={navigateToProduct} />}
+          />
+          <Route
+            path="/product/:id"
+            element={<ProductPage onAddToCart={handleAddToCart} />}
+          />
+          <Route
+            path="/contact-us"
+            element={<ContactsPage />}
+          />
+          <Route
+            path="/privacy-policy"
+            element={<PrivacyPolicy />}
+          />
+          <Route
+            path="/returns-and-exchange-policy"
+            element={<ReturnsAndExchangePolicy />}
+          />
+        </Routes>
       </main>
+
       <Footer />
-      <CartSidebar 
-        isOpen={isCartOpen} 
-        onClose={() => setIsCartOpen(false)} 
+
+      <CartSidebar
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
         cartItems={cartItems}
         onUpdateQuantity={handleUpdateCartQuantity}
         onRemoveItem={handleRemoveFromCart}
       />
-      <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+      />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }

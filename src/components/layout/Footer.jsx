@@ -12,17 +12,17 @@ const Footer = () => (
         <div>
           <h3 className="text-2xl font-bold mb-4">Shop</h3>
           <ul className="space-y-2 text-gray-400">
-            <li><a href="#" className="hover:text-white">&gt; All Products</a></li>
-            <li><a href="#" className="hover:text-white">&gt; T-Shirts</a></li>
+            <li><a href="/" className="hover:text-white">&gt; All Products</a></li>
+            <li><a href="/" className="hover:text-white">&gt; T-Shirts</a></li>
           </ul>
         </div>
         <div>
           <h3 className="text-2xl font-bold mb-4">Support</h3>
           <ul className="space-y-2 text-gray-400">
-            <li><a href="#" className="hover:text-white">&gt; Returns and Exchange</a></li>
-            <li><a href="#" className="hover:text-white">&gt; Terms of Service</a></li>
-            <li><a href="#" className="hover:text-white">&gt; Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-white">&gt; Contact Us</a></li>
+            <li><a href="returns-and-exchange-policy" className="hover:text-white">&gt; Returns and Exchange</a></li>
+            <li><a href="/" className="hover:text-white">&gt; Terms of Service</a></li>
+            <li><a href="privacy-policy" className="hover:text-white">&gt; Privacy Policy</a></li>
+            <li><a href="contact-us" className="hover:text-white">&gt; Contact Us</a></li>
           </ul>
         </div>
       </div>
