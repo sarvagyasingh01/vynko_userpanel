@@ -56,7 +56,6 @@ if (loading) {
 
   return (
     <div className="bg-white">
-      THIS IS FOR DEVELOPMENT ONLY
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {products.slice(0, visibleCount).map((product) => (
