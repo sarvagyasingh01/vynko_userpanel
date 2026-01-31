@@ -87,7 +87,7 @@ function AppContent() {
           />
           <Route
             path="/returns-and-exchange-policy"
-            element={<ReturnsAndExchangePolicy />}
+            element={<ReturnsAndExchangePolicy />} 
           />
         </Routes>
       </main>
